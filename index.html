@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Portal Login</title>
+  <style>
+    :root {
+      --ink: #17263d;
+      --muted: #738096;
+      --navy: #18345a;
+      --blue: #2159a8;
+      --line: #dfe6ef;
+      --cream: #f5f7fb;
+      --white: #ffffff;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, "Segoe UI", Arial, sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 85% 12%, rgba(72, 129, 197, 0.10), transparent 28%),
+        var(--cream);
+    }
+
+    .page {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1.06fr 0.94fr;
+    }
+
+    .welcome {
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 600px;
+      padding: 52px 7.2%;
+      color: white;
+      background:
+        linear-gradient(145deg, rgba(18, 46, 82, 0.96), rgba(31, 91, 153, 0.88)),
+        url("https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1200&q=85") center/cover;
+    }
+
+    .welcome::before,
+    .welcome::after {
+      content: "";
+      position: absolute;
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .welcome::before { width: 460px; height: 460px; right: -260px; top: -180px; }
+    .welcome::after { width: 320px; height: 320px; right: -130px; bottom: -230px; }
+
+    .brand,
+    .welcome-copy,
+    .school-meta { position: relative; z-index: 1; }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .crest {
+      width: 52px;
+      height: 52px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(255, 255, 255, 0.42);
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .brand-name { line-height: 1.08; }
+    .brand-name strong {
+      display: block;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 19px;
+      letter-spacing: 0.5px;
+    }
+    .brand-name span {
+      display: block;
+      margin-top: 5px;
+      font-size: 10px;
+      letter-spacing: 2.5px;
+      opacity: 0.72;
+    }
+
+    .welcome-copy { margin: auto 0; max-width: 580px; }
+
+    .eyebrow {
+      margin: 0 0 18px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #a8c9ed;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 530px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(48px, 5.1vw, 76px);
+      line-height: 0.99;
+      letter-spacing: -2.5px;
+      font-weight: 600;
+    }
+
+    .welcome-copy p:last-child {
+      max-width: 470px;
+      margin: 25px 0 0;
+      font-size: 16px;
+      line-height: 1.75;
+      color: rgba(255, 255, 255, 0.78);
+    }
+
+    .school-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.65);
+      letter-spacing: 0.3px;
+    }
+
+    .school-meta::before {
+      content: "";
+      width: 38px;
+      height: 1px;
+      background: rgba(255, 255, 255, 0.45);
+    }
+
+    .login-panel {
+      display: grid;
+      place-items: center;
+      padding: 48px;
+      background: rgba(255, 255, 255, 0.72);
+    }
+
+    .login-card {
+      width: min(100%, 430px);
+      padding: 30px 0;
+    }
+
+    .login-card h2 {
+      margin: 0 0 9px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 42px;
+      line-height: 1;
+      letter-spacing: -1.2px;
+    }
+
+    .subtitle {
+      margin: 0 0 38px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .field { margin-bottom: 20px; }
+
+    label {
+      display: block;
+      margin-bottom: 9px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .input-wrap { position: relative; }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      height: 54px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      outline: none;
+      background: var(--white);
+      color: var(--ink);
+      font: inherit;
+      font-size: 14px;
+      padding: 0 48px 0 16px;
+      transition: border-color .2s, box-shadow .2s;
+    }
+
+    input:focus {
+      border-color: #7da2cf;
+      box-shadow: 0 0 0 4px rgba(33, 89, 168, 0.08);
+    }
+
+    input::placeholder { color: #adb6c4; }
+
+    .field-icon {
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      width: 19px;
+      height: 19px;
+      transform: translateY(-50%);
+      color: #93a0b3;
+      pointer-events: none;
+    }
+
+    .toggle-password {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      width: 32px;
+      height: 32px;
+      display: grid;
+      place-items: center;
+      border: 0;
+      background: transparent;
+      color: #93a0b3;
+      cursor: pointer;
+      transform: translateY(-50%);
+    }
+
+    .toggle-password svg { width: 19px; height: 19px; }
+
+    .options {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 2px 0 26px;
+      font-size: 13px;
+    }
+
+    .remember {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      color: #617087;
+      cursor: pointer;
+    }
+
+    .remember input {
+      width: 16px;
+      height: 16px;
+      accent-color: var(--blue);
+    }
+
+    .forgot {
+      color: var(--blue);
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    .forgot:hover { text-decoration: underline; }
+
+    .login-button {
+      width: 100%;
+      height: 54px;
+      border: 0;
+      border-radius: 8px;
+      background: var(--blue);
+      color: white;
+      font: inherit;
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: 0.2px;
+      cursor: pointer;
+      box-shadow: 0 10px 24px rgba(33, 89, 168, 0.18);
+      transition: transform .18s, background .18s, box-shadow .18s;
+    }
+
+    .login-button:hover {
+      background: #194b94;
+      transform: translateY(-1px);
+      box-shadow: 0 13px 28px rgba(33, 89, 168, 0.24);
+    }
+
+    .login-button:active { transform: translateY(0); }
+
+    .help {
+      margin: 24px 0 0;
+      text-align: center;
+      font-size: 12px;
+      color: #8a96a8;
+    }
+
+    .help a { color: #596981; font-weight: 700; text-decoration: none; }
+
+    @media (max-width: 900px) {
+      .page { grid-template-columns: 0.82fr 1.18fr; }
+      .welcome { padding: 40px 8%; }
+      h1 { font-size: 48px; }
+    }
+
+    @media (max-width: 700px) {
+      .page { display: block; }
+      .welcome {
+        min-height: 260px;
+        padding: 28px 24px;
+      }
+      .welcome-copy { margin: 36px 0 12px; }
+      .welcome-copy p:last-child,
+      .school-meta { display: none; }
+      h1 { max-width: 360px; font-size: 42px; }
+      .eyebrow { margin-bottom: 10px; }
+      .login-panel { min-height: calc(100vh - 260px); padding: 38px 24px; }
+      .login-card { padding: 0; }
+      .login-card h2 { font-size: 36px; }
+    }
+
+    @media (max-width: 400px) {
+      .welcome { min-height: 220px; }
+      .brand-name strong { font-size: 16px; }
+      .crest { width: 46px; height: 46px; }
+      h1 { font-size: 36px; }
+      .login-panel { min-height: calc(100vh - 220px); }
+      .options { align-items: flex-start; gap: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="welcome" aria-label="School introduction">
+      <div class="brand">
+        <div class="crest" aria-hidden="true">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M3 10.5 12 6l9 4.5-9 4.5-9-4.5Z" />
+            <path d="M6.5 12v4.2c2.8 2.2 8.2 2.2 11 0V12" />
+            <path d="M21 11v5" />
+          </svg>
+        </div>
+        <div class="brand-name">
+          <strong>Westbridge Academy</strong>
+          <span>STUDENT PORTAL</span>
+        </div>
+      </div>
+
+      <div class="welcome-copy">
+        <p class="eyebrow">Welcome back</p>
+        <h1>Your learning journey continues here.</h1>
+        <p>Access your classes, assignments, grades, and campus announcements—all in one place.</p>
+      </div>
+
+      <div class="school-meta">ACADEMIC YEAR 2026–2027</div>
+    </section>
+
+    <section class="login-panel">
+      <div class="login-card">
+        <h2>Student Login</h2>
+        <p class="subtitle">Please enter your credentials to continue.</p>
+
+        <form id="loginForm">
+          <div class="field">
+            <label for="studentId">Student ID</label>
+            <div class="input-wrap">
+              <input id="studentId" name="studentId" type="text" placeholder="Enter your student ID" autocomplete="username" required />
+              <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+                <circle cx="12" cy="8" r="3.5" />
+                <path d="M5.5 20c.7-3.8 3-5.5 6.5-5.5s5.8 1.7 6.5 5.5" />
+              </svg>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="password">Password</label>
+            <div class="input-wrap">
+              <input id="password" name="password" type="password" placeholder="Enter your password" autocomplete="current-password" required />
+              <button class="toggle-password" type="button" aria-label="Show password" aria-pressed="false">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+                  <path d="M2.5 12s3.5-5 9.5-5 9.5 5 9.5 5-3.5 5-9.5 5-9.5-5-9.5-5Z" />
+                  <circle cx="12" cy="12" r="2.5" />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="options">
+            <label class="remember">
+              <input type="checkbox" name="remember" />
+              <span>Remember me</span>
+            </label>
+            <a class="forgot" href="#">Forgot password?</a>
+          </div>
+
+          <button class="login-button" type="submit">Sign in to portal</button>
+        </form>
+
+        <p class="help">Need help? <a href="#">Contact IT Support</a></p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const passwordInput = document.getElementById("password");
+    const togglePassword = document.querySelector(".toggle-password");
+
+    togglePassword.addEventListener("click", () => {
+      const isHidden = passwordInput.type === "password";
+      passwordInput.type = isHidden ? "text" : "password";
+      togglePassword.setAttribute("aria-pressed", String(isHidden));
+      togglePassword.setAttribute("aria-label", isHidden ? "Hide password" : "Show password");
+    });
+
+    document.getElementById("loginForm").addEventListener("submit", (event) => {
+      event.preventDefault();
+      const button = event.currentTarget.querySelector(".login-button");
+      button.textContent = "Signing in…";
+      setTimeout(() => {
+        button.textContent = "Sign in to portal";
+      }, 1200);
+    });
+  </script>
+</body>
+</html>
+   
